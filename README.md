@@ -15,15 +15,27 @@ This project is a web-based audio streaming application built with React for the
 ## Setup and Installation
 
 ### Docker Deployment
-1. **Build and run with Docker Compose**:
+1. **Build Docker Compose images**:
    ```bash
-   docker-compose up --build
+   make build
    ```
-   This will build and start the frontend and backend services as defined in the `docker-compose.yml` file.
+   This command will build the Docker images for the frontend and backend services as defined in the `docker-compose.yml` file.
 
-2. **Access the application**:
+2. **Run Docker Compose services**:
+   ```bash
+   make run
+   ```
+   This will start the frontend and backend services.
+
+3. **Access the application**:
    - Frontend: `http://localhost:8001`
    - Backend WebSocket: `ws://localhost:8000/audio`
+
+4. **Stop Docker Compose services**:
+   ```bash
+   make stop
+   ```
+   This will stop the running frontend and backend services.
 
 ## Batched Inference and Circular Buffer
 The backend server uses a batched inference approach with a circular buffer to efficiently process audio data:
@@ -48,14 +60,6 @@ The project includes a Makefile with several useful commands:
 - **clean**: Remove Python cache files
   ```bash
   make clean
-  ```
-- **install**: Install production dependencies
-  ```bash
-  make install
-  ```
-- **dev-install**: Install development dependencies
-  ```bash
-  make dev-install
   ```
 - **build**: Build Docker Compose images
   ```bash
