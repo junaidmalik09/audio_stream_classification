@@ -17,7 +17,7 @@ app = FastAPI()
 
 MODEL_NAME = "7wolf/wav2vec2-base-gender-classification"
 
-
+# Load configuration from YAML file
 with open("config/config.yaml", "r") as config_file:
     config = yaml.safe_load(config_file)
 
@@ -40,14 +40,22 @@ model = BatchedInferenceWithThreshold(MODEL_NAME, threshold=THRESHOLD)
 
 # === CONFIGURATION ===
 
-
 # === DEQUE FOR PROCESSING (used as our audio queue) ===
 audio_queue = deque(maxlen=100)
 
-
-# === AUDIO PROCESSING THREAD ===
 def process_audio(websocket, loop):
-    """Background thread for processing audio chunks."""
+    """
+    Background thread for processing audio chunks.
+
+    This function continuously processes audio chunks from the audio queue.
+    When enough chunks are available, it forms a window of audio data, 
+    performs inference using the model, and sends the predicted class 
+    back to the client via the websocket.
+
+    Args:
+        websocket (WebSocket): The websocket connection to the client.
+        loop (asyncio.AbstractEventLoop): The event loop for running asynchronous tasks.
+    """
     while True:
         if len(audio_queue) > WINDOW_SIZE_IN_CHUNKS:
             audio_window = torch.stack(list(audio_queue)[:WINDOW_SIZE_IN_CHUNKS], dim=0)
@@ -67,11 +75,19 @@ def process_audio(websocket, loop):
                 loop,
             )
 
-
-# === FASTAPI WEBSOCKET ENDPOINT ===
 @app.websocket("/audio")
 async def websocket_endpoint(websocket: WebSocket):
-    """Handles real-time audio streaming from clients."""
+    """
+    Handles real-time audio streaming from clients.
+
+    This endpoint accepts a websocket connection from a client, starts a 
+    background thread to process incoming audio data, and continuously 
+    receives audio bytes from the client. The audio data is decoded and 
+    added to the processing queue.
+
+    Args:
+        websocket (WebSocket): The websocket connection to the client.
+    """
     await websocket.accept()
     loop = asyncio.get_running_loop()
 
@@ -97,7 +113,12 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         logger.info("Client disconnected.")
 
-
 @app.get("/healthcheck")
 async def healthcheck():
+    """
+    Healthcheck endpoint to verify the service is running.
+
+    Returns:
+        dict: A dictionary with the status of the service.
+    """
     return {"status": "ok"}

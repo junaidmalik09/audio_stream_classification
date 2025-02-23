@@ -2,6 +2,8 @@
 
 This project is a web-based audio streaming application built with React for the frontend and a WebSocket server for the backend. The application captures audio from the user's microphone, streams it to the backend server for processing, and displays the inference results in real-time.
 
+**Disclaimer**: The frontend of this application is entirely AI-generated and may be rough around the edges. Please be aware that it might not meet all production standards and could require further refinement.
+
 ## Features
 - Real-time audio streaming from the browser to the server
 - WebSocket communication for low-latency data transfer
