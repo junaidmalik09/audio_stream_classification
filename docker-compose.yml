@@ -8,6 +8,11 @@ services:
     volumes:
       - ./backend:/app
       - ./config:/app/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthcheck"]
+      interval: 60s
+      timeout: 10s
+      retries: 5
 
   frontend:
     build:
@@ -21,3 +26,6 @@ services:
     environment:
       - WS_URL=ws://backend:8000/audio
       - GRADIO_SERVER_NAME=0.0.0.0
+    depends_on:
+      backend:
+        condition: service_healthy

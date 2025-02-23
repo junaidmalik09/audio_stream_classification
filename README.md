@@ -27,7 +27,7 @@ This project is a web-based audio streaming application built with React for the
    ```bash
    make run
    ```
-   This will start the frontend and backend services.
+   This will start the frontend and backend services. Please wait for all services to be healthy and running before accessing the application, as the backend requires some time to load the model.
 
 3. **Access the application**:
    - Frontend: `http://localhost:8001`
@@ -42,7 +42,7 @@ This project is a web-based audio streaming application built with React for the
 ## Batched Inference and Circular Buffer
 The backend server uses a batched inference approach with a circular buffer to efficiently process audio data:
 
-- **Batched Inference**: The server processes audio data in batches using a pre-trained model (`7wolf/wav2vec2-base-gender-classification`). This allows for efficient and accurate inference by leveraging the model's capabilities to handle multiple audio chunks simultaneously.
+- **Batched Inference**: The server processes audio data in batches using a pre-trained model (`7wolf/wav2vec2-base-gender-classification`). This allows for efficient and accurate inference by leveraging the model's capabilities to handle multiple audio chunks simultaneously. The audio stream is classified into three categories: ambient noise, male, or female.
 
 - **Circular Buffer**: A deque is used as a circular buffer to store incoming audio chunks. The buffer has a maximum length, ensuring that only the most recent audio data is retained. This approach allows for continuous processing of audio streams without running out of memory.
 
@@ -85,6 +85,7 @@ The project includes a Makefile with several useful commands:
   - `Dockerfile.frontend`: Dockerfile for building the frontend.
 - `backend/`: Contains the backend WebSocket server code.
 - `docker-compose.yml`: Docker Compose configuration file.
+- `notebooks/`: Contains related Jupyter notebooks for additional analysis and experimentation.
 
 ## Troubleshooting
 - **WebSocket Connection Issues**: Ensure the backend service is running and accessible on the specified port. Check network configurations and firewall settings.
