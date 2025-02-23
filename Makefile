@@ -17,12 +17,6 @@ help:
 	@echo "  run         - Run Docker Compose services"
 	@echo "  stop        - Stop Docker Compose services"
 
-install:
-	$(PYTHON) -m pip install -r requirements.txt
-
-dev-install:
-	$(PYTHON) -m pip install -r requirements-dev.txt
-
 format:
 	$(PYTHON) -m black backend --line-length $(LINE_LENGTH) --exclude extras --exclude .venv
 	$(PYTHON) -m isort backend --profile black --line-length $(LINE_LENGTH) --skip extras --skip .venv
