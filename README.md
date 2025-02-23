@@ -77,7 +77,15 @@ The project includes a Makefile with several useful commands:
   ```
 
 ## Configuration
+The application offers several configuration options to customize its behavior:
+
 - **WebSocket URL**: The WebSocket URL is configured using the `REACT_APP_WS_URL` environment variable. This can be set in the Dockerfile or passed as a build argument.
+- **Model Configuration**: The backend uses a configuration file (`config/config.yaml`) to set parameters for audio processing and inference:
+  - **chunk_size**: Defines the duration of each audio chunk received from the client.
+  - **sample_rate**: Specifies the number of audio samples per second. A common value for speech processing is 16kHz.
+  - **window_size**: Sets the length of the audio window used for inference, measured in seconds.
+  - **overlap_ratio**: Determines the fraction of overlap between consecutive audio windows, allowing for smoother transitions and more accurate predictions.
+  - **rms_threshold**: Establishes the root mean square (RMS) threshold for audio classification, helping to filter out low-intensity noise.
 
 ## File Structure
 - `frontend/`: Contains the React frontend application.
