@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./config:/app/config
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8001:80"
+    volumes:
+      - ./frontend:/app
+      - ./config:/app/config
+    environment:
+      - WS_URL=ws://backend:8000/audio
+      - GRADIO_SERVER_NAME=0.0.0.0

@@ -1,0 +1,11 @@
+jupyter
+transformers
+torch
+torchinfo
+matplotlib
+torchaudio
+sounddevice
+soundfile
+fastapi
+uvicorn
+websockets
